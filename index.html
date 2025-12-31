@@ -641,6 +641,359 @@
                 font-size: 16px;
             }
         }
+
+        /* ============================================
+           EXPLAIN MODE - Stack Visualization
+           ============================================ */
+
+        .explain-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: #f0f4f8;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .explain-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .explain-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .explain-toggle .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: var(--text-muted);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 4px;
+        }
+
+        .explain-toggle .tooltip-text {
+            display: none;
+            position: absolute;
+            background: var(--primary);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: normal;
+            max-width: 280px;
+            line-height: 1.5;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .explain-toggle .tooltip-icon:hover + .tooltip-text,
+        .explain-toggle .tooltip-text:hover {
+            display: block;
+        }
+
+        /* Stack Widget */
+        .stack-widget {
+            display: none;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 2px solid #2d2d44;
+        }
+
+        .stack-widget.visible {
+            display: block;
+        }
+
+        .stack-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stack-title {
+            color: #8892b0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stack-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .stack-btn {
+            background: #2d2d44;
+            border: 1px solid #444;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .stack-btn:hover:not(:disabled) {
+            background: #3d3d54;
+            color: white;
+        }
+
+        .stack-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .stack-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Horizontal Stack Display (mobile-friendly) */
+        .stack-display {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stack-register {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #252540;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            min-width: 80px;
+        }
+
+        .stack-register.highlight {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .stack-register.x-reg {
+            background: #2e3a50;
+            border-color: #4a5568;
+        }
+
+        .stack-label {
+            color: #ffd700;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.75rem;
+            font-weight: bold;
+            min-width: 14px;
+        }
+
+        .stack-value {
+            color: #00ff88;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.95rem;
+            text-align: right;
+            flex: 1;
+        }
+
+        .stack-value.empty {
+            color: #555;
+        }
+
+        /* Memory Register (Sticky Note) */
+        .memory-register {
+            display: none;
+            margin-left: auto;
+            background: #fffacd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #e6d88a;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+            transform: rotate(1deg);
+        }
+
+        .memory-register.visible {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memory-label {
+            color: #666;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.7rem;
+        }
+
+        .memory-value {
+            color: #333;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Expression Line */
+        .expression-line {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #252540;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+        .expression-label {
+            color: #8892b0;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+        }
+
+        .expression-content {
+            color: #e8e8e8;
+            font-family: 'Times New Roman', serif;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8892b0;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .step-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .step-dot:hover {
+            background: #666;
+        }
+
+        .step-dot.active {
+            background: var(--accent);
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        /* Highlight current keystroke step */
+        .keystroke-step.active-step .keystroke-box {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Why ENTER tooltip */
+        .why-enter-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 4px;
+        }
+
+        .why-enter-btn {
+            background: #4a4a6a;
+            border: 1px solid #666;
+            color: #ffd700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .why-enter-btn:hover {
+            background: #5a5a7a;
+        }
+
+        .why-enter-popup {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            width: 260px;
+            line-height: 1.5;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            z-index: 50;
+            margin-bottom: 8px;
+        }
+
+        .why-enter-popup::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: var(--primary);
+        }
+
+        .why-enter-btn:hover + .why-enter-popup,
+        .why-enter-popup:hover {
+            display: block;
+        }
+
+        /* Mobile adjustments for stack widget */
+        @media (max-width: 600px) {
+            .stack-display {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .stack-register {
+                min-width: 100%;
+            }
+
+            .memory-register {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .stack-controls {
+                flex-wrap: wrap;
+            }
+
+            .why-enter-popup {
+                width: 220px;
+                left: 0;
+                transform: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -711,6 +1064,67 @@
                     <span class="expandable-arrow">&#9660;</span>
                 </div>
                 <div class="expandable-content">
+                    <!-- Explain Mode Toggle -->
+                    <div class="explain-toggle">
+                        <label>
+                            <input type="checkbox" id="explain-mode-toggle" onchange="toggleExplainMode()">
+                            Explain Mode
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">
+                                <strong>What is RPN?</strong><br>
+                                RPN uses a 4-level stack (T, Z, Y, X). Numbers go on the stack, then operations act on them. ENTER pushes X to Y and lifts the stack. This mode shows you what happens at each step.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Stack Visualization Widget -->
+                    <div class="stack-widget" id="stack-widget">
+                        <div class="stack-header">
+                            <span class="stack-title">RPN Stack</span>
+                            <div class="stack-controls">
+                                <button class="stack-btn" id="prev-step-btn" onclick="prevStep()" disabled>
+                                    &#9664; Prev
+                                </button>
+                                <button class="stack-btn" id="next-step-btn" onclick="nextStep()">
+                                    Next &#9654;
+                                </button>
+                                <button class="stack-btn" id="play-btn" onclick="toggleAutoPlay()">
+                                    &#9654; Play
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stack-display">
+                            <div class="stack-register">
+                                <span class="stack-label">T</span>
+                                <span class="stack-value empty" id="stack-t">-</span>
+                            </div>
+                            <div class="stack-register">
+                                <span class="stack-label">Z</span>
+                                <span class="stack-value empty" id="stack-z">-</span>
+                            </div>
+                            <div class="stack-register">
+                                <span class="stack-label">Y</span>
+                                <span class="stack-value empty" id="stack-y">-</span>
+                            </div>
+                            <div class="stack-register x-reg">
+                                <span class="stack-label">X</span>
+                                <span class="stack-value" id="stack-x">0</span>
+                            </div>
+                            <div class="memory-register" id="memory-register">
+                                <span class="memory-label">R00:</span>
+                                <span class="memory-value" id="memory-value">-</span>
+                            </div>
+                        </div>
+                        <div class="expression-line">
+                            <div class="expression-label">Current operation:</div>
+                            <div class="expression-content" id="expression-content">Ready to begin...</div>
+                        </div>
+                        <div class="step-indicator">
+                            <span>Step <span id="current-step">0</span> of <span id="total-steps">0</span></span>
+                            <div class="step-dots" id="step-dots"></div>
+                        </div>
+                    </div>
+
                     <div id="keystroke-content"></div>
                 </div>
             </div>
@@ -764,6 +1178,16 @@
             sessionCorrect: 0,
             sessionTotal: 0,
             answered: false
+        };
+
+        // Explain Mode state
+        let explainState = {
+            enabled: false,
+            currentStep: 0,
+            totalSteps: 0,
+            stackSnapshots: [],
+            autoPlayInterval: null,
+            isPlaying: false
         };
 
         let progress = loadProgress();
@@ -917,8 +1341,8 @@
                 else hornerForm += ' - ' + Math.abs(nextCoeff);
             }
 
-            // Generate keystrokes
-            const keystrokes = generatePolynomialKeystrokes(coeffs, evalPoint);
+            // Generate keystrokes and stack snapshots
+            const { steps, snapshots } = generatePolynomialKeystrokes(coeffs, evalPoint);
 
             return {
                 type: 'polynomial',
@@ -926,7 +1350,8 @@
                 answer: answer,
                 tolerance: 0.0001,
                 solution: generatePolynomialSolution(coeffs, evalPoint, answer),
-                keystrokes: keystrokes
+                keystrokes: steps,
+                stackSnapshots: snapshots
             };
         }
 
@@ -955,6 +1380,15 @@
         function generatePolynomialKeystrokes(coeffs, evalPoint) {
             const degree = coeffs.length - 1;
             let steps = [];
+            let snapshots = [];
+
+            // Initial stack state
+            snapshots.push({
+                T: null, Z: null, Y: null, X: 0,
+                R00: null,
+                expression: 'Stack empty, ready to begin Horner\'s method',
+                keystrokeIndex: null
+            });
 
             // Step 1: Store x value
             let storeKey = '';
@@ -968,6 +1402,14 @@
                 keys: storeKey
             });
 
+            // Snapshot after storing x
+            snapshots.push({
+                T: null, Z: null, Y: null, X: evalPoint,
+                R00: evalPoint,
+                expression: `Stored x = ${evalPoint} in R00 for repeated use`,
+                keystrokeIndex: 0
+            });
+
             // Step 2: Enter leading coefficient
             let leadingEntry = coeffs[0] < 0 ?
                 `${Math.abs(coeffs[0])} <span class="key">CHS</span> <span class="key key-enter">ENTER</span>` :
@@ -977,9 +1419,18 @@
                 keys: leadingEntry
             });
 
+            // Snapshot after entering leading coefficient
+            snapshots.push({
+                T: null, Z: null, Y: coeffs[0], X: coeffs[0],
+                R00: evalPoint,
+                expression: `Entered a<sub>${degree}</sub> = ${coeffs[0]} (ENTER duplicates to Y)`,
+                keystrokeIndex: 1
+            });
+
             // Steps for each subsequent coefficient
             let running = coeffs[0];
             for (let i = 1; i <= degree; i++) {
+                const prevRunning = running;
                 running = running * evalPoint + coeffs[i];
                 const c = coeffs[i];
                 let coeffPart = '';
@@ -994,9 +1445,42 @@
                     keys: `<span class="key">RCL</span> <span class="key">00</span> <span class="key">×</span> ${coeffPart}` +
                           `<span class="keystroke-comment">[Result: ${running}]</span>`
                 });
+
+                // Snapshot after RCL
+                const afterRcl = prevRunning * evalPoint;
+                snapshots.push({
+                    T: null, Z: null, Y: prevRunning, X: evalPoint,
+                    R00: evalPoint,
+                    expression: `RCL 00: Recalled x = ${evalPoint} to X`,
+                    keystrokeIndex: i + 1
+                });
+
+                // Snapshot after ×
+                snapshots.push({
+                    T: null, Z: null, Y: null, X: afterRcl,
+                    R00: evalPoint,
+                    expression: `× : ${prevRunning} × ${evalPoint} = ${afterRcl}`,
+                    keystrokeIndex: i + 1
+                });
+
+                // Snapshot after adding coefficient
+                snapshots.push({
+                    T: null, Z: null, Y: null, X: running,
+                    R00: evalPoint,
+                    expression: `+ ${c}: ${afterRcl} + ${c} = ${running}`,
+                    keystrokeIndex: i + 1
+                });
             }
 
-            return steps;
+            // Final snapshot
+            snapshots.push({
+                T: null, Z: null, Y: null, X: running,
+                R00: evalPoint,
+                expression: `<strong>Final result: P(${evalPoint}) = ${running}</strong>`,
+                keystrokeIndex: steps.length - 1
+            });
+
+            return { steps, snapshots };
         }
 
         function generateBinomialQuestion() {
@@ -1019,13 +1503,16 @@
 
             const question = `Find the coefficient of x<sup>${xPower}</sup> in the expansion of (${aStr}${bStr})<sup>${n}</sup>`;
 
+            const { steps, snapshots } = generateBinomialKeystrokes(n, k, a, b);
+
             return {
                 type: 'binomial',
                 question: question,
                 answer: answer,
                 tolerance: 0.0001,
                 solution: generateBinomialSolution(n, k, a, b, binomCoeff, aPower, bPower, answer, xPower),
-                keystrokes: generateBinomialKeystrokes(n, k, a, b)
+                keystrokes: steps,
+                stackSnapshots: snapshots
             };
         }
 
@@ -1044,35 +1531,130 @@
 
         function generateBinomialKeystrokes(n, k, a, b) {
             let steps = [];
+            let snapshots = [];
+            const combVal = comb(n, k);
+            const aPow = n - k;
+            const aResult = Math.pow(a, aPow);
+            const bResult = Math.pow(b, k);
+            const step2Result = combVal * aResult;
+            const finalAnswer = step2Result * bResult;
+
+            // Initial state
+            snapshots.push({
+                T: null, Z: null, Y: null, X: 0,
+                R00: null,
+                expression: 'Ready to calculate binomial coefficient term',
+                keystrokeIndex: null
+            });
 
             // Step 1: Calculate C(n,k)
             steps.push({
                 label: `Step 1: Calculate C(${n}, ${k})`,
                 keys: `${n} <span class="key key-enter">ENTER</span> ${k} <span class="key key-shift">[SHIFT]</span> <span class="key">[PROB]</span> <span class="key">COMB</span>` +
-                      `<span class="keystroke-comment">[Result: ${comb(n,k)}]</span>`
+                      `<span class="keystroke-comment">[Result: ${combVal}]</span>`
+            });
+
+            // Snapshots for step 1
+            snapshots.push({
+                T: null, Z: null, Y: n, X: n,
+                R00: null,
+                expression: `Entered ${n}, ENTER duplicates to Y`,
+                keystrokeIndex: 0
+            });
+            snapshots.push({
+                T: null, Z: null, Y: n, X: k,
+                R00: null,
+                expression: `Entered ${k} (stack lift disabled after ENTER)`,
+                keystrokeIndex: 0
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: combVal,
+                R00: null,
+                expression: `COMB: C(${n},${k}) = ${combVal}`,
+                keystrokeIndex: 0
             });
 
             // Step 2: Multiply by a^(n-k)
-            // Note: ENTER is required to separate base from exponent. After ENTER, stack lift
-            // is disabled so exponent replaces X. After y^x, stack drops bringing C(n,k) to Y.
-            const aPow = n - k;
             let aEntry = a < 0 ? `${Math.abs(a)} <span class="key">CHS</span>` : `${a}`;
             steps.push({
                 label: `Step 2: Multiply by (${a})<sup>${aPow}</sup>`,
                 keys: `${aEntry} <span class="key key-enter">ENTER</span> ${aPow} <span class="key">y<sup>x</sup></span> <span class="key">×</span>` +
-                      `<span class="keystroke-comment">[Result: ${comb(n,k) * Math.pow(a, aPow)}]</span>`
+                      `<span class="keystroke-comment">[Result: ${step2Result}]</span>`
+            });
+
+            // Snapshots for step 2
+            snapshots.push({
+                T: null, Z: null, Y: combVal, X: a,
+                R00: null,
+                expression: `Entered base ${a}`,
+                keystrokeIndex: 1
+            });
+            snapshots.push({
+                T: null, Z: combVal, Y: a, X: a,
+                R00: null,
+                expression: `ENTER: Duplicated ${a} to Y, lifted stack`,
+                keystrokeIndex: 1
+            });
+            snapshots.push({
+                T: null, Z: combVal, Y: a, X: aPow,
+                R00: null,
+                expression: `Entered exponent ${aPow} (replaces X, lift disabled)`,
+                keystrokeIndex: 1
+            });
+            snapshots.push({
+                T: null, Z: null, Y: combVal, X: aResult,
+                R00: null,
+                expression: `y<sup>x</sup>: ${a}<sup>${aPow}</sup> = ${aResult}`,
+                keystrokeIndex: 1
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: step2Result,
+                R00: null,
+                expression: `×: ${combVal} × ${aResult} = ${step2Result}`,
+                keystrokeIndex: 1
             });
 
             // Step 3: Multiply by b^k
             let bEntry = b < 0 ? `${Math.abs(b)} <span class="key">CHS</span>` : `${b}`;
-            const finalAnswer = comb(n,k) * Math.pow(a, aPow) * Math.pow(b, k);
             steps.push({
                 label: `Step 3: Multiply by (${b})<sup>${k}</sup>`,
                 keys: `${bEntry} <span class="key key-enter">ENTER</span> ${k} <span class="key">y<sup>x</sup></span> <span class="key">×</span>` +
                       `<span class="keystroke-comment">[Result: ${finalAnswer}]</span>`
             });
 
-            return steps;
+            // Snapshots for step 3
+            snapshots.push({
+                T: null, Z: null, Y: step2Result, X: b,
+                R00: null,
+                expression: `Entered base ${b}`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: step2Result, Y: b, X: b,
+                R00: null,
+                expression: `ENTER: Duplicated ${b} to Y, lifted stack`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: step2Result, Y: b, X: k,
+                R00: null,
+                expression: `Entered exponent ${k}`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: null, Y: step2Result, X: bResult,
+                R00: null,
+                expression: `y<sup>x</sup>: ${b}<sup>${k}</sup> = ${bResult}`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: finalAnswer,
+                R00: null,
+                expression: `<strong>Final: ${step2Result} × ${bResult} = ${finalAnswer}</strong>`,
+                keystrokeIndex: 2
+            });
+
+            return { steps, snapshots };
         }
 
         function generateComplexQuestion() {
@@ -1094,6 +1676,8 @@
 
             const question = `Verify that ${rootStr} is a root of x<sup>2</sup> ${pStr} ${qStr} = 0`;
 
+            const { steps, snapshots } = generateComplexKeystrokes(a, b, p, q);
+
             return {
                 type: 'complex',
                 question: question,
@@ -1102,7 +1686,8 @@
                 complexRoot: { real: a, imag: b },
                 coefficients: { p: p, q: q },
                 solution: generateComplexSolution(a, b, p, q),
-                keystrokes: generateComplexKeystrokes(a, b, p, q)
+                keystrokes: steps,
+                stackSnapshots: snapshots
             };
         }
 
@@ -1138,6 +1723,22 @@
 
         function generateComplexKeystrokes(a, b, p, q) {
             let steps = [];
+            let snapshots = [];
+
+            const z = { real: a, imag: b };
+            const z2Real = a*a - b*b;
+            const z2Imag = 2*a*b;
+            const pzReal = p * a;
+            const pzImag = p * b;
+            const afterPz = { real: z2Real + pzReal, imag: z2Imag + pzImag };
+
+            // Initial state
+            snapshots.push({
+                T: null, Z: null, Y: null, X: 0,
+                R00: null,
+                expression: 'Ready to verify complex root',
+                keystrokeIndex: null
+            });
 
             // Step 1: Enter and store complex number
             let aEntry = a < 0 ? `${Math.abs(a)} <span class="key">CHS</span>` : `${a}`;
@@ -1148,22 +1749,79 @@
                 keys: `${aEntry} <span class="key key-enter">ENTER</span> ${bEntry} <span class="key key-shift">[SHIFT]</span> <span class="key">[COMPLEX]</span> <span class="key">STO</span> <span class="key">00</span>`
             });
 
+            // Snapshots for step 1
+            snapshots.push({
+                T: null, Z: null, Y: a, X: a,
+                R00: null,
+                expression: `Entered real part ${a}, ENTER duplicates`,
+                keystrokeIndex: 0
+            });
+            snapshots.push({
+                T: null, Z: null, Y: a, X: b,
+                R00: null,
+                expression: `Entered imaginary part ${b}`,
+                keystrokeIndex: 0
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: z,
+                R00: null,
+                expression: `COMPLEX: Combined into ${a}+${b}i`,
+                keystrokeIndex: 0
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: z,
+                R00: z,
+                expression: `STO 00: Stored z for reuse`,
+                keystrokeIndex: 0
+            });
+
             // Step 2: Calculate z^2
-            const z2Real = a*a - b*b;
-            const z2Imag = 2*a*b;
             steps.push({
                 label: 'Step 2: Calculate z²',
                 keys: `<span class="key">RCL</span> <span class="key">00</span> <span class="key key-enter">ENTER</span> <span class="key">×</span>` +
                       `<span class="keystroke-comment">[Result: ${z2Real} + ${z2Imag}i]</span>`
             });
 
+            const z2 = { real: z2Real, imag: z2Imag };
+            snapshots.push({
+                T: null, Z: null, Y: z, X: z,
+                R00: z,
+                expression: `RCL 00 ENTER: z in both X and Y`,
+                keystrokeIndex: 1
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: z2,
+                R00: z,
+                expression: `×: z² = (${a}+${b}i)² = ${z2Real}+${z2Imag}i`,
+                keystrokeIndex: 1
+            });
+
             // Step 3: Add pz
             let pEntry = p < 0 ? `${Math.abs(p)} <span class="key">CHS</span>` : `${p}`;
-            const afterPz = { real: z2Real + p*a, imag: z2Imag + p*b };
             steps.push({
                 label: `Step 3: Add ${p} × z`,
                 keys: `<span class="key">RCL</span> <span class="key">00</span> ${pEntry} <span class="key">×</span> <span class="key">+</span>` +
                       `<span class="keystroke-comment">[Result: ${afterPz.real} + ${afterPz.imag}i]</span>`
+            });
+
+            const pz = { real: pzReal, imag: pzImag };
+            snapshots.push({
+                T: null, Z: null, Y: z2, X: z,
+                R00: z,
+                expression: `RCL 00: Recalled z`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: null, Y: z2, X: pz,
+                R00: z,
+                expression: `× ${p}: ${p}z = ${pzReal}+${pzImag}i`,
+                keystrokeIndex: 2
+            });
+            snapshots.push({
+                T: null, Z: null, Y: null, X: afterPz,
+                R00: z,
+                expression: `+: z² + ${p}z = ${afterPz.real}+${afterPz.imag}i`,
+                keystrokeIndex: 2
             });
 
             // Step 4: Add q
@@ -1173,7 +1831,14 @@
                       `<span class="keystroke-comment">[Result: 0 + 0i ✓]</span>`
             });
 
-            return steps;
+            snapshots.push({
+                T: null, Z: null, Y: null, X: { real: 0, imag: 0 },
+                R00: z,
+                expression: `<strong>+ ${q}: Result = 0+0i (Verified!)</strong>`,
+                keystrokeIndex: 3
+            });
+
+            return { steps, snapshots };
         }
 
         function generateFactoringQuestion() {
@@ -1305,6 +1970,8 @@
             });
             questionText += `<br>Calculate stratified sample sizes for a total sample of n = ${sampleSize}.`;
 
+            const { steps, snapshots } = generateStratifiedKeystrokes(samples, totalPop, sampleSize);
+
             return {
                 type: 'stratified',
                 question: questionText,
@@ -1314,7 +1981,8 @@
                 totalPop: totalPop,
                 sampleSize: sampleSize,
                 solution: generateStratifiedSolution(samples, totalPop, sampleSize),
-                keystrokes: generateStratifiedKeystrokes(samples, totalPop, sampleSize)
+                keystrokes: steps,
+                stackSnapshots: snapshots
             };
         }
 
@@ -1335,6 +2003,15 @@
 
         function generateStratifiedKeystrokes(samples, totalPop, sampleSize) {
             let steps = [];
+            let snapshots = [];
+
+            // Initial state
+            snapshots.push({
+                T: null, Z: null, Y: null, X: 0,
+                R00: null,
+                expression: 'Ready to calculate stratified sample sizes',
+                keystrokeIndex: null
+            });
 
             samples.forEach((s, i) => {
                 steps.push({
@@ -1342,9 +2019,45 @@
                     keys: `${s.pop} <span class="key key-enter">ENTER</span> ${totalPop} <span class="key">÷</span> ${sampleSize} <span class="key">×</span>` +
                           `<span class="keystroke-comment">[Result: ${s.sample.toFixed(2)}]</span>`
                 });
+
+                const proportion = s.pop / totalPop;
+
+                // Snapshots for this stratum
+                snapshots.push({
+                    T: null, Z: null, Y: s.pop, X: s.pop,
+                    R00: null,
+                    expression: `Entered ${s.name} population: ${s.pop}`,
+                    keystrokeIndex: i
+                });
+                snapshots.push({
+                    T: null, Z: null, Y: s.pop, X: totalPop,
+                    R00: null,
+                    expression: `Entered total population: ${totalPop}`,
+                    keystrokeIndex: i
+                });
+                snapshots.push({
+                    T: null, Z: null, Y: null, X: proportion,
+                    R00: null,
+                    expression: `÷: ${s.pop}/${totalPop} = ${proportion.toFixed(4)} (proportion)`,
+                    keystrokeIndex: i
+                });
+                snapshots.push({
+                    T: null, Z: null, Y: null, X: s.sample,
+                    R00: null,
+                    expression: `× ${sampleSize}: Sample for ${s.name} = ${s.sample.toFixed(2)}`,
+                    keystrokeIndex: i
+                });
             });
 
-            return steps;
+            // Final summary
+            snapshots.push({
+                T: null, Z: null, Y: null, X: samples[samples.length - 1].sample,
+                R00: null,
+                expression: `<strong>Done! All ${samples.length} strata calculated.</strong>`,
+                keystrokeIndex: steps.length - 1
+            });
+
+            return { steps, snapshots };
         }
 
         function generateRandomQuestion() {
@@ -1354,6 +2067,8 @@
             const question = `Generate ${n} random integers from 1 to ${N} for a simple random sample.<br><br>
                               <em>This is practice - use the keystroke sequence below, then enter any ${n} of your generated numbers separated by commas.</em>`;
 
+            const { steps, snapshots } = generateRandomKeystrokes(N, n);
+
             return {
                 type: 'random',
                 question: question,
@@ -1362,7 +2077,8 @@
                 N: N,
                 n: n,
                 solution: generateRandomSolution(N, n),
-                keystrokes: generateRandomKeystrokes(N, n)
+                keystrokes: steps,
+                stackSnapshots: snapshots
             };
         }
 
@@ -1381,7 +2097,7 @@
         }
 
         function generateRandomKeystrokes(N, n) {
-            return [{
+            let steps = [{
                 label: `Step 1: Store N = ${N} in register 00 (do once):`,
                 keys: `${N} <span class="key">STO</span> <span class="key">00</span>`
             }, {
@@ -1394,6 +2110,59 @@
                 label: 'Note:',
                 keys: `<span class="keystroke-comment">Generate ${n} unique integers total.</span>`
             }];
+
+            // Example random value for demonstration
+            const exampleRandom = 0.42;
+            const exampleScaled = N * exampleRandom;
+            const exampleIP = Math.floor(exampleScaled);
+            const exampleResult = exampleIP + 1;
+
+            let snapshots = [
+                {
+                    T: null, Z: null, Y: null, X: 0,
+                    R00: null,
+                    expression: 'Ready to generate random integers',
+                    keystrokeIndex: null
+                },
+                {
+                    T: null, Z: null, Y: null, X: N,
+                    R00: N,
+                    expression: `STO 00: Stored N = ${N} for repeated use`,
+                    keystrokeIndex: 0
+                },
+                {
+                    T: null, Z: null, Y: null, X: N,
+                    R00: N,
+                    expression: `RCL 00: Recalled N = ${N}`,
+                    keystrokeIndex: 1
+                },
+                {
+                    T: null, Z: null, Y: N, X: exampleRandom,
+                    R00: N,
+                    expression: `RAN: Generated random 0 ≤ x < 1 (e.g., ${exampleRandom})`,
+                    keystrokeIndex: 1
+                },
+                {
+                    T: null, Z: null, Y: null, X: exampleScaled,
+                    R00: N,
+                    expression: `×: ${N} × ${exampleRandom} = ${exampleScaled.toFixed(2)} (scaled to 0..${N})`,
+                    keystrokeIndex: 1
+                },
+                {
+                    T: null, Z: null, Y: null, X: exampleIP,
+                    R00: N,
+                    expression: `IP: Integer part = ${exampleIP} (range 0..${N-1})`,
+                    keystrokeIndex: 1
+                },
+                {
+                    T: null, Z: null, Y: null, X: exampleResult,
+                    R00: N,
+                    expression: `<strong>+ 1: Final result = ${exampleResult} (range 1..${N})</strong>`,
+                    keystrokeIndex: 1
+                }
+            ];
+
+            return { steps, snapshots };
         }
 
         // ============================================
@@ -1473,6 +2242,12 @@
             // Collapse expandables
             document.getElementById('solution-section').classList.remove('open');
             document.getElementById('keystroke-section').classList.remove('open');
+
+            // Reset explain mode if active
+            if (explainState.enabled) {
+                stopAutoPlay();
+                initializeExplainMode();
+            }
 
             // Handle special question types and show/hide verify button
             const verifyBtn = document.getElementById('verify-btn');
@@ -1653,6 +2428,205 @@
                 updateStats();
                 renderProgressGrid();
                 renderCategoryTabs();
+            }
+        }
+
+        // ============================================
+        // EXPLAIN MODE FUNCTIONS
+        // ============================================
+
+        function toggleExplainMode() {
+            explainState.enabled = document.getElementById('explain-mode-toggle').checked;
+            const widget = document.getElementById('stack-widget');
+
+            if (explainState.enabled) {
+                widget.classList.add('visible');
+                initializeExplainMode();
+            } else {
+                widget.classList.remove('visible');
+                stopAutoPlay();
+                clearStepHighlights();
+            }
+        }
+
+        function initializeExplainMode() {
+            const q = state.currentQuestion;
+            if (!q || !q.stackSnapshots) {
+                // No snapshots available for this question type
+                document.getElementById('expression-content').textContent = 'Stack visualization not available for this drill type.';
+                return;
+            }
+
+            explainState.stackSnapshots = q.stackSnapshots;
+            explainState.totalSteps = q.stackSnapshots.length;
+            explainState.currentStep = 0;
+
+            // Update total steps display
+            document.getElementById('total-steps').textContent = explainState.totalSteps;
+
+            // Create step dots
+            const dotsContainer = document.getElementById('step-dots');
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < explainState.totalSteps; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'step-dot';
+                dot.onclick = () => goToStep(i);
+                dotsContainer.appendChild(dot);
+            }
+
+            // Show initial state
+            updateStackDisplay();
+            updateStepButtons();
+        }
+
+        function updateStackDisplay() {
+            if (explainState.currentStep >= explainState.stackSnapshots.length) return;
+
+            const snapshot = explainState.stackSnapshots[explainState.currentStep];
+
+            // Update stack registers
+            updateRegister('stack-t', snapshot.T);
+            updateRegister('stack-z', snapshot.Z);
+            updateRegister('stack-y', snapshot.Y);
+            updateRegister('stack-x', snapshot.X);
+
+            // Update memory register
+            const memReg = document.getElementById('memory-register');
+            const memVal = document.getElementById('memory-value');
+            if (snapshot.R00 !== undefined && snapshot.R00 !== null) {
+                memReg.classList.add('visible');
+                memVal.textContent = formatStackValue(snapshot.R00);
+            } else {
+                memReg.classList.remove('visible');
+            }
+
+            // Update expression line
+            document.getElementById('expression-content').innerHTML = snapshot.expression || '';
+
+            // Update step counter
+            document.getElementById('current-step').textContent = explainState.currentStep + 1;
+
+            // Update step dots
+            const dots = document.querySelectorAll('.step-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i < explainState.currentStep) {
+                    dot.classList.add('completed');
+                } else if (i === explainState.currentStep) {
+                    dot.classList.add('active');
+                }
+            });
+
+            // Highlight corresponding keystroke step
+            highlightKeystrokeStep(snapshot.keystrokeIndex);
+        }
+
+        function updateRegister(id, value) {
+            const elem = document.getElementById(id);
+            if (value === undefined || value === null || value === '') {
+                elem.textContent = '-';
+                elem.classList.add('empty');
+            } else {
+                elem.textContent = formatStackValue(value);
+                elem.classList.remove('empty');
+            }
+        }
+
+        function formatStackValue(val) {
+            if (val === null || val === undefined) return '-';
+            if (typeof val === 'object' && 'real' in val && 'imag' in val) {
+                // Complex number
+                const sign = val.imag >= 0 ? '+' : '';
+                return `${val.real}${sign}${val.imag}i`;
+            }
+            if (typeof val === 'number') {
+                if (Number.isInteger(val)) return val.toString();
+                return val.toFixed(4).replace(/\.?0+$/, '');
+            }
+            return String(val);
+        }
+
+        function highlightKeystrokeStep(index) {
+            clearStepHighlights();
+            if (index === undefined || index === null) return;
+
+            const steps = document.querySelectorAll('.keystroke-step');
+            if (steps[index]) {
+                steps[index].classList.add('active-step');
+                steps[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function clearStepHighlights() {
+            document.querySelectorAll('.keystroke-step.active-step').forEach(el => {
+                el.classList.remove('active-step');
+            });
+        }
+
+        function updateStepButtons() {
+            document.getElementById('prev-step-btn').disabled = explainState.currentStep === 0;
+            document.getElementById('next-step-btn').disabled = explainState.currentStep >= explainState.totalSteps - 1;
+        }
+
+        function nextStep() {
+            if (explainState.currentStep < explainState.totalSteps - 1) {
+                explainState.currentStep++;
+                updateStackDisplay();
+                updateStepButtons();
+            } else {
+                stopAutoPlay();
+            }
+        }
+
+        function prevStep() {
+            if (explainState.currentStep > 0) {
+                explainState.currentStep--;
+                updateStackDisplay();
+                updateStepButtons();
+            }
+        }
+
+        function goToStep(index) {
+            explainState.currentStep = index;
+            updateStackDisplay();
+            updateStepButtons();
+        }
+
+        function toggleAutoPlay() {
+            if (explainState.isPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (explainState.currentStep >= explainState.totalSteps - 1) {
+                explainState.currentStep = 0;
+                updateStackDisplay();
+            }
+
+            explainState.isPlaying = true;
+            document.getElementById('play-btn').innerHTML = '&#9632; Stop';
+            document.getElementById('play-btn').classList.add('active');
+
+            explainState.autoPlayInterval = setInterval(() => {
+                if (explainState.currentStep < explainState.totalSteps - 1) {
+                    nextStep();
+                } else {
+                    stopAutoPlay();
+                }
+            }, 1500);
+        }
+
+        function stopAutoPlay() {
+            explainState.isPlaying = false;
+            document.getElementById('play-btn').innerHTML = '&#9654; Play';
+            document.getElementById('play-btn').classList.remove('active');
+
+            if (explainState.autoPlayInterval) {
+                clearInterval(explainState.autoPlayInterval);
+                explainState.autoPlayInterval = null;
             }
         }
 

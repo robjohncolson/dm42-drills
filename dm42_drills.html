@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM42 Drill System - Algebra 2 & AP Stats Unit 3</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --primary-light: #34495e;
+            --accent: #3498db;
+            --accent-hover: #2980b9;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border: #dce1e4;
+            --key-bg: #1a1a2e;
+            --key-text: #e8e8e8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .tab-btn .tab-progress {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-left: 6px;
+        }
+
+        /* Main Card */
+        .drill-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-area {
+            margin-bottom: 24px;
+        }
+
+        .question-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .question-text .math {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+        }
+
+        .polynomial {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.3rem;
+        }
+
+        sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        /* Answer Input */
+        .answer-section {
+            margin-bottom: 24px;
+        }
+
+        .answer-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .answer-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .answer-input:focus {
+            border-color: var(--accent);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success);
+            background: #f0fff4;
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--error);
+            background: #fff5f5;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+        }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Expandable Sections */
+        .expandable {
+            margin-top: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            padding: 14px 18px;
+            background: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .expandable-header:hover {
+            background: #eef1f3;
+        }
+
+        .expandable-arrow {
+            transition: transform 0.2s;
+        }
+
+        .expandable.open .expandable-arrow {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            display: none;
+            padding: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .expandable.open .expandable-content {
+            display: block;
+        }
+
+        /* Keystroke Display */
+        .keystroke-step {
+            margin-bottom: 16px;
+        }
+
+        .keystroke-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .keystroke-box {
+            background: var(--key-bg);
+            color: var(--key-text);
+            font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            border: 1px solid #333;
+        }
+
+        .key {
+            display: inline-block;
+            background: #2d2d44;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin: 0 2px;
+            font-size: 0.9em;
+        }
+
+        .key-shift {
+            background: #4a4a6a;
+            color: #ffd700;
+        }
+
+        .key-enter {
+            background: #2e5a2e;
+        }
+
+        .keystroke-comment {
+            color: #888;
+            font-style: italic;
+            margin-left: 8px;
+        }
+
+        /* Solution Section */
+        .solution-text {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .solution-step {
+            margin-bottom: 8px;
+        }
+
+        .solution-answer {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-top: 12px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px;
+        }
+
+        .progress-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .progress-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .progress-item-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .progress-item-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar-container {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* Random Drill Special */
+        .random-results {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+
+        .random-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            margin: 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .random-number.duplicate {
+            background: var(--error);
+            text-decoration: line-through;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 12px;
+            }
+
+            header {
+                padding: 16px;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .drill-card {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .answer-row {
+                flex-direction: column;
+            }
+
+            .answer-input {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                flex: 1;
+                text-align: center;
+                font-size: 0.8rem;
+                padding: 8px 10px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .category-tabs, .action-buttons, .btn {
+                display: none;
+            }
+
+            .expandable-content {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DM42 Drill System</h1>
+            <div class="subtitle">Algebra 2 & AP Statistics - Unit 3</div>
+            <div class="stats-bar">
+                <div class="stat">
+                    Session: <span class="stat-value" id="session-correct">0</span>/<span id="session-total">0</span> correct
+                </div>
+                <div class="stat">
+                    All-time: <span class="stat-value" id="alltime-correct">0</span> correct
+                </div>
+            </div>
+        </header>
+
+        <div class="category-tabs" id="category-tabs">
+            <!-- Generated by JS -->
+        </div>
+
+        <div class="drill-card">
+            <div class="category-title" id="category-title">Polynomial Evaluation (Horner's Method)</div>
+
+            <div class="question-area">
+                <div class="question-label">Question</div>
+                <div class="question-text" id="question-text">Loading...</div>
+            </div>
+
+            <div class="answer-section" id="answer-section">
+                <div class="answer-row">
+                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer" autocomplete="off">
+                    <button class="btn btn-success" id="verify-btn" onclick="markVerified()" style="display: none; background: #27ae60;">Mark Verified</button>
+                    <button class="btn btn-primary" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <div class="expandable" id="solution-section">
+                <div class="expandable-header" onclick="toggleExpandable('solution-section')">
+                    <span>Show Solution</span>
+                    <span class="expandable-arrow">&#9660;</span>
+                </div>
+                <div class="expandable-content">
+                    <div class="solution-text" id="solution-text"></div>
+                </div>
+            </div>
+
+            <div class="expandable" id="keystroke-section">
+                <div class="expandable-header" onclick="toggleExpandable('keystroke-section')">
+                    <span>Show DM42 Keystrokes</span>
+                    <span class="expandable-arrow">&#9660;</span>
+                </div>
+                <div class="expandable-content">
+                    <div id="keystroke-content"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="newQuestion()">New Question</button>
+                <button class="btn btn-secondary" onclick="resetProgress()">Reset Progress</button>
+            </div>
+        </div>
+
+        <div class="progress-card">
+            <div class="progress-title">Category Progress</div>
+            <div class="progress-grid" id="progress-grid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA & STATE
+        // ============================================
+
+        const CATEGORIES = [
+            { id: 'polynomial', name: 'Polynomial Eval', fullName: 'Polynomial Evaluation (Horner\'s Method)' },
+            { id: 'binomial', name: 'Binomial Coeff', fullName: 'Binomial Coefficients' },
+            { id: 'complex', name: 'Complex Roots', fullName: 'Complex Number Verification' },
+            { id: 'factoring', name: 'Factoring', fullName: 'Factorization Verification' },
+            { id: 'stratified', name: 'Stratified Sample', fullName: 'Stratified Sampling (AP Stats)' },
+            { id: 'random', name: 'Random Integers', fullName: 'Random Integer Generation (AP Stats)' }
+        ];
+
+        let state = {
+            currentCategory: 'polynomial',
+            currentQuestion: null,
+            sessionCorrect: 0,
+            sessionTotal: 0,
+            answered: false
+        };
+
+        let progress = loadProgress();
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('dm42_drill_progress');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (e) {
+                console.error('Error loading progress:', e);
+            }
+            return {
+                polynomial: { attempted: 0, correct: 0 },
+                binomial: { attempted: 0, correct: 0 },
+                complex: { attempted: 0, correct: 0 },
+                factoring: { attempted: 0, correct: 0 },
+                stratified: { attempted: 0, correct: 0 },
+                random: { attempted: 0, correct: 0 },
+                lastSession: new Date().toISOString()
+            };
+        }
+
+        function saveProgress() {
+            try {
+                progress.lastSession = new Date().toISOString();
+                localStorage.setItem('dm42_drill_progress', JSON.stringify(progress));
+            } catch (e) {
+                console.error('Error saving progress:', e);
+            }
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function randNonZero(min, max) {
+            let val = 0;
+            while (val === 0) {
+                val = randInt(min, max);
+            }
+            return val;
+        }
+
+        function factorial(n) {
+            if (n <= 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) result *= i;
+            return result;
+        }
+
+        function comb(n, k) {
+            if (k > n || k < 0) return 0;
+            return factorial(n) / (factorial(k) * factorial(n - k));
+        }
+
+        function formatCoeff(c, isFirst, varPart) {
+            if (c === 0) return '';
+            let sign = c > 0 ? (isFirst ? '' : ' + ') : (isFirst ? '-' : ' - ');
+            let absC = Math.abs(c);
+            if (varPart === '') {
+                return sign + absC;
+            }
+            if (absC === 1) {
+                return sign + varPart;
+            }
+            return sign + absC + varPart;
+        }
+
+        function formatPolynomial(coeffs) {
+            // coeffs[0] is highest degree
+            const degree = coeffs.length - 1;
+            let parts = [];
+            let isFirst = true;
+
+            for (let i = 0; i <= degree; i++) {
+                const c = coeffs[i];
+                const power = degree - i;
+                if (c === 0) continue;
+
+                let varPart = '';
+                if (power > 1) varPart = 'x<sup>' + power + '</sup>';
+                else if (power === 1) varPart = 'x';
+
+                parts.push(formatCoeff(c, isFirst, varPart));
+                isFirst = false;
+            }
+
+            return parts.join('') || '0';
+        }
+
+        function formatNumber(n) {
+            if (Number.isInteger(n)) return n.toString();
+            return n.toFixed(4).replace(/\.?0+$/, '');
+        }
+
+        // ============================================
+        // QUESTION GENERATORS
+        // ============================================
+
+        function generatePolynomialQuestion() {
+            const degree = randInt(3, 5);
+            const coeffs = [];
+
+            // Leading coefficient non-zero
+            coeffs.push(randNonZero(-5, 5));
+
+            // Other coefficients can include zeros
+            for (let i = 1; i <= degree; i++) {
+                coeffs.push(randInt(-10, 10));
+            }
+
+            // Evaluation point
+            let evalPoint = randInt(-5, 5);
+
+            // Sometimes generate a root (answer = 0)
+            if (Math.random() < 0.2) {
+                // Adjust constant term to make evalPoint a root
+                let sum = 0;
+                for (let i = 0; i < degree; i++) {
+                    sum = sum * evalPoint + coeffs[i];
+                }
+                coeffs[degree] = -sum * evalPoint;
+                if (Math.abs(coeffs[degree]) > 100) {
+                    // If too large, just use random
+                    coeffs[degree] = randInt(-10, 10);
+                }
+            }
+
+            // Calculate answer using Horner's method
+            let answer = coeffs[0];
+            for (let i = 1; i <= degree; i++) {
+                answer = answer * evalPoint + coeffs[i];
+            }
+
+            // Generate Horner form string
+            let hornerForm = '';
+            for (let i = 0; i < degree; i++) {
+                hornerForm = '(' + hornerForm + (i === 0 ? coeffs[0] : '') + ')x';
+                const nextCoeff = coeffs[i + 1];
+                if (nextCoeff >= 0) hornerForm += ' + ' + nextCoeff;
+                else hornerForm += ' - ' + Math.abs(nextCoeff);
+            }
+
+            // Generate keystrokes
+            const keystrokes = generatePolynomialKeystrokes(coeffs, evalPoint);
+
+            return {
+                type: 'polynomial',
+                question: `Evaluate P(x) = ${formatPolynomial(coeffs)} at x = ${evalPoint}`,
+                answer: answer,
+                tolerance: 0.0001,
+                solution: generatePolynomialSolution(coeffs, evalPoint, answer),
+                keystrokes: keystrokes
+            };
+        }
+
+        function generatePolynomialSolution(coeffs, evalPoint, answer) {
+            const degree = coeffs.length - 1;
+            let html = '<div class="solution-step"><strong>Using Horner\'s Method:</strong></div>';
+            html += '<div class="solution-step">Rewrite as nested form for efficient evaluation.</div>';
+
+            let steps = [];
+            let current = coeffs[0];
+            steps.push(`Start: ${coeffs[0]}`);
+
+            for (let i = 1; i <= degree; i++) {
+                const prev = current;
+                current = current * evalPoint + coeffs[i];
+                const sign = coeffs[i] >= 0 ? '+' : '';
+                steps.push(`${prev} × (${evalPoint}) ${sign} ${coeffs[i]} = ${current}`);
+            }
+
+            html += '<div class="solution-step">' + steps.join('<br>') + '</div>';
+            html += `<div class="solution-answer">Answer: ${answer}</div>`;
+
+            return html;
+        }
+
+        function generatePolynomialKeystrokes(coeffs, evalPoint) {
+            const degree = coeffs.length - 1;
+            let steps = [];
+
+            // Step 1: Store x value
+            let storeKey = '';
+            if (evalPoint < 0) {
+                storeKey = `${Math.abs(evalPoint)} <span class="key">CHS</span> <span class="key">STO</span> <span class="key">00</span>`;
+            } else {
+                storeKey = `${evalPoint} <span class="key">STO</span> <span class="key">00</span>`;
+            }
+            steps.push({
+                label: `Step 1: Store x = ${evalPoint} in register 00`,
+                keys: storeKey
+            });
+
+            // Step 2: Enter leading coefficient
+            let leadingEntry = coeffs[0] < 0 ?
+                `${Math.abs(coeffs[0])} <span class="key">CHS</span> <span class="key key-enter">ENTER</span>` :
+                `${coeffs[0]} <span class="key key-enter">ENTER</span>`;
+            steps.push({
+                label: 'Step 2: Enter leading coefficient',
+                keys: leadingEntry
+            });
+
+            // Steps for each subsequent coefficient
+            let running = coeffs[0];
+            for (let i = 1; i <= degree; i++) {
+                running = running * evalPoint + coeffs[i];
+                const c = coeffs[i];
+                let coeffPart = '';
+                if (c >= 0) {
+                    coeffPart = `${c} <span class="key">+</span>`;
+                } else {
+                    coeffPart = `${Math.abs(c)} <span class="key">CHS</span> <span class="key">+</span>`;
+                }
+
+                steps.push({
+                    label: `Step ${i + 2}: Multiply by x and add coefficient`,
+                    keys: `<span class="key">RCL</span> <span class="key">00</span> <span class="key">×</span> ${coeffPart}` +
+                          `<span class="keystroke-comment">[Result: ${running}]</span>`
+                });
+            }
+
+            return steps;
+        }
+
+        function generateBinomialQuestion() {
+            const n = randInt(4, 7);
+            const a = randNonZero(-3, 3);
+            const b = randNonZero(-3, 3);
+
+            // Which term to ask for (0 to n, representing x^(n-k))
+            const k = randInt(1, n - 1); // Avoid trivial cases
+            const xPower = n - k;
+
+            // Coefficient = C(n,k) * a^(n-k) * b^k
+            const binomCoeff = comb(n, k);
+            const aPower = Math.pow(a, n - k);
+            const bPower = Math.pow(b, k);
+            const answer = binomCoeff * aPower * bPower;
+
+            const aStr = a === 1 ? 'x' : (a === -1 ? '-x' : `${a}x`);
+            const bStr = b >= 0 ? ` + ${b}` : ` - ${Math.abs(b)}`;
+
+            const question = `Find the coefficient of x<sup>${xPower}</sup> in the expansion of (${aStr}${bStr})<sup>${n}</sup>`;
+
+            return {
+                type: 'binomial',
+                question: question,
+                answer: answer,
+                tolerance: 0.0001,
+                solution: generateBinomialSolution(n, k, a, b, binomCoeff, aPower, bPower, answer, xPower),
+                keystrokes: generateBinomialKeystrokes(n, k, a, b)
+            };
+        }
+
+        function generateBinomialSolution(n, k, a, b, binomCoeff, aPower, bPower, answer, xPower) {
+            let html = '<div class="solution-step"><strong>Binomial Theorem:</strong></div>';
+            html += `<div class="solution-step">The x<sup>${xPower}</sup> term has k = ${k} (since power of x is n - k = ${n} - ${k} = ${xPower})</div>`;
+            html += '<div class="solution-step">';
+            html += `Coefficient = C(${n}, ${k}) × (${a})<sup>${n-k}</sup> × (${b})<sup>${k}</sup><br>`;
+            html += `= ${binomCoeff} × ${aPower} × ${bPower}<br>`;
+            html += `= ${binomCoeff * aPower} × ${bPower}<br>`;
+            html += `= ${answer}`;
+            html += '</div>';
+            html += `<div class="solution-answer">Answer: ${answer}</div>`;
+            return html;
+        }
+
+        function generateBinomialKeystrokes(n, k, a, b) {
+            let steps = [];
+
+            // Step 1: Calculate C(n,k)
+            steps.push({
+                label: `Step 1: Calculate C(${n}, ${k})`,
+                keys: `${n} <span class="key key-enter">ENTER</span> ${k} <span class="key key-shift">[SHIFT]</span> <span class="key">[PROB]</span> <span class="key">COMB</span>` +
+                      `<span class="keystroke-comment">[Result: ${comb(n,k)}]</span>`
+            });
+
+            // Step 2: Multiply by a^(n-k)
+            // Note: ENTER is required to separate base from exponent. After ENTER, stack lift
+            // is disabled so exponent replaces X. After y^x, stack drops bringing C(n,k) to Y.
+            const aPow = n - k;
+            let aEntry = a < 0 ? `${Math.abs(a)} <span class="key">CHS</span>` : `${a}`;
+            steps.push({
+                label: `Step 2: Multiply by (${a})<sup>${aPow}</sup>`,
+                keys: `${aEntry} <span class="key key-enter">ENTER</span> ${aPow} <span class="key">y<sup>x</sup></span> <span class="key">×</span>` +
+                      `<span class="keystroke-comment">[Result: ${comb(n,k) * Math.pow(a, aPow)}]</span>`
+            });
+
+            // Step 3: Multiply by b^k
+            let bEntry = b < 0 ? `${Math.abs(b)} <span class="key">CHS</span>` : `${b}`;
+            const finalAnswer = comb(n,k) * Math.pow(a, aPow) * Math.pow(b, k);
+            steps.push({
+                label: `Step 3: Multiply by (${b})<sup>${k}</sup>`,
+                keys: `${bEntry} <span class="key key-enter">ENTER</span> ${k} <span class="key">y<sup>x</sup></span> <span class="key">×</span>` +
+                      `<span class="keystroke-comment">[Result: ${finalAnswer}]</span>`
+            });
+
+            return steps;
+        }
+
+        function generateComplexQuestion() {
+            // Generate a nice complex root a + bi
+            const a = randInt(-5, 5);
+            const b = randNonZero(-5, 5); // b must be non-zero for complex
+
+            // For x^2 + px + q = 0 with root a+bi:
+            // p = -2a (sum of roots is a+bi + a-bi = 2a, so -p = 2a)
+            // q = a^2 + b^2 (product of roots is (a+bi)(a-bi) = a^2 + b^2)
+            const p = -2 * a;
+            const q = a * a + b * b;
+
+            const bSign = b >= 0 ? '+' : '-';
+            const rootStr = `${a} ${bSign} ${Math.abs(b)}i`;
+
+            let pStr = p >= 0 ? `+ ${p}x` : `- ${Math.abs(p)}x`;
+            let qStr = `+ ${q}`;
+
+            const question = `Verify that ${rootStr} is a root of x<sup>2</sup> ${pStr} ${qStr} = 0`;
+
+            return {
+                type: 'complex',
+                question: question,
+                answer: 'verified', // Special handling for this type
+                isVerification: true,
+                complexRoot: { real: a, imag: b },
+                coefficients: { p: p, q: q },
+                solution: generateComplexSolution(a, b, p, q),
+                keystrokes: generateComplexKeystrokes(a, b, p, q)
+            };
+        }
+
+        function generateComplexSolution(a, b, p, q) {
+            // z^2 = (a+bi)^2 = a^2 - b^2 + 2abi
+            const z2Real = a*a - b*b;
+            const z2Imag = 2*a*b;
+
+            // pz = p(a+bi) = pa + pbi
+            const pzReal = p * a;
+            const pzImag = p * b;
+
+            // z^2 + pz = (z2Real + pzReal) + (z2Imag + pzImag)i
+            const sumReal = z2Real + pzReal;
+            const sumImag = z2Imag + pzImag;
+
+            // z^2 + pz + q
+            const finalReal = sumReal + q;
+            const finalImag = sumImag;
+
+            let html = '<div class="solution-step"><strong>Verify by substitution:</strong></div>';
+            html += `<div class="solution-step">Let z = ${a} + ${b}i</div>`;
+            html += `<div class="solution-step">`;
+            html += `z<sup>2</sup> = (${a} + ${b}i)<sup>2</sup> = ${z2Real} + ${z2Imag}i<br>`;
+            html += `${p}z = ${p}(${a} + ${b}i) = ${pzReal} + ${pzImag}i<br>`;
+            html += `z<sup>2</sup> + ${p}z = (${z2Real} + ${pzReal}) + (${z2Imag} + ${pzImag})i = ${sumReal} + ${sumImag}i<br>`;
+            html += `z<sup>2</sup> + ${p}z + ${q} = ${sumReal} + ${q} + ${sumImag}i = ${finalReal} + ${finalImag}i`;
+            html += '</div>';
+            html += `<div class="solution-answer">Result: 0 + 0i (Verified!)</div>`;
+
+            return html;
+        }
+
+        function generateComplexKeystrokes(a, b, p, q) {
+            let steps = [];
+
+            // Step 1: Enter and store complex number
+            let aEntry = a < 0 ? `${Math.abs(a)} <span class="key">CHS</span>` : `${a}`;
+            let bEntry = b < 0 ? `${Math.abs(b)} <span class="key">CHS</span>` : `${b}`;
+
+            steps.push({
+                label: `Step 1: Enter z = ${a} + ${b}i and store in register 00`,
+                keys: `${aEntry} <span class="key key-enter">ENTER</span> ${bEntry} <span class="key key-shift">[SHIFT]</span> <span class="key">[COMPLEX]</span> <span class="key">STO</span> <span class="key">00</span>`
+            });
+
+            // Step 2: Calculate z^2
+            const z2Real = a*a - b*b;
+            const z2Imag = 2*a*b;
+            steps.push({
+                label: 'Step 2: Calculate z²',
+                keys: `<span class="key">RCL</span> <span class="key">00</span> <span class="key key-enter">ENTER</span> <span class="key">×</span>` +
+                      `<span class="keystroke-comment">[Result: ${z2Real} + ${z2Imag}i]</span>`
+            });
+
+            // Step 3: Add pz
+            let pEntry = p < 0 ? `${Math.abs(p)} <span class="key">CHS</span>` : `${p}`;
+            const afterPz = { real: z2Real + p*a, imag: z2Imag + p*b };
+            steps.push({
+                label: `Step 3: Add ${p} × z`,
+                keys: `<span class="key">RCL</span> <span class="key">00</span> ${pEntry} <span class="key">×</span> <span class="key">+</span>` +
+                      `<span class="keystroke-comment">[Result: ${afterPz.real} + ${afterPz.imag}i]</span>`
+            });
+
+            // Step 4: Add q
+            steps.push({
+                label: `Step 4: Add ${q}`,
+                keys: `${q} <span class="key">+</span>` +
+                      `<span class="keystroke-comment">[Result: 0 + 0i ✓]</span>`
+            });
+
+            return steps;
+        }
+
+        function generateFactoringQuestion() {
+            const types = ['diffSquares', 'diffCubes', 'sumCubes'];
+            const type = randChoice(types);
+
+            let expression, factored, evalPoint, leftVal, rightVal;
+            const x = randInt(-5, 5);
+            evalPoint = x;
+
+            if (type === 'diffSquares') {
+                const a = randInt(2, 6);
+                const b = randInt(1, 5);
+                // a^2 x^2 - b^2 = (ax - b)(ax + b)
+                expression = `${a*a}x<sup>2</sup> - ${b*b}`;
+                factored = `(${a}x - ${b})(${a}x + ${b})`;
+                leftVal = a*a*x*x - b*b;
+                rightVal = (a*x - b) * (a*x + b);
+            } else if (type === 'diffCubes') {
+                const a = randInt(1, 4);
+                const b = randInt(1, 3);
+                // a^3 x^3 - b^3 = (ax - b)(a^2 x^2 + ab x + b^2)
+                const a3 = a*a*a;
+                const b3 = b*b*b;
+                const a2 = a*a;
+                const b2 = b*b;
+                expression = `${a3}x<sup>3</sup> - ${b3}`;
+                factored = `(${a}x - ${b})(${a2}x<sup>2</sup> + ${a*b}x + ${b2})`;
+                leftVal = a3*x*x*x - b3;
+                rightVal = (a*x - b) * (a2*x*x + a*b*x + b2);
+            } else { // sumCubes
+                const a = randInt(1, 4);
+                const b = randInt(1, 3);
+                const a3 = a*a*a;
+                const b3 = b*b*b;
+                const a2 = a*a;
+                const b2 = b*b;
+                expression = `${a3}x<sup>3</sup> + ${b3}`;
+                factored = `(${a}x + ${b})(${a2}x<sup>2</sup> - ${a*b}x + ${b2})`;
+                leftVal = a3*x*x*x + b3;
+                rightVal = (a*x + b) * (a2*x*x - a*b*x + b2);
+            }
+
+            const question = `Verify: ${expression} = ${factored} by evaluating both sides at x = ${evalPoint}`;
+
+            return {
+                type: 'factoring',
+                question: question,
+                answer: leftVal,
+                tolerance: 0.0001,
+                isVerification: true,  // Show "Mark Verified" button for verification drills
+                expectedBothSides: { left: leftVal, right: rightVal },
+                solution: generateFactoringSolution(expression, factored, evalPoint, leftVal, rightVal),
+                keystrokes: generateFactoringKeystrokes(expression, factored, evalPoint, leftVal)
+            };
+        }
+
+        function generateFactoringSolution(expression, factored, x, leftVal, rightVal) {
+            let html = '<div class="solution-step"><strong>Evaluate both sides at x = ' + x + ':</strong></div>';
+            html += `<div class="solution-step">Left side: ${leftVal}</div>`;
+            html += `<div class="solution-step">Right side: ${rightVal}</div>`;
+            html += `<div class="solution-answer">${leftVal === rightVal ? 'Both sides equal! Verified.' : 'Values don\'t match - check calculation.'}</div>`;
+            return html;
+        }
+
+        function generateFactoringKeystrokes(expression, factored, x, result) {
+            let steps = [];
+            let xEntry = x < 0 ? `${Math.abs(x)} <span class="key">CHS</span>` : `${x}`;
+
+            steps.push({
+                label: 'Step 1: Store x value',
+                keys: `${xEntry} <span class="key">STO</span> <span class="key">00</span>`
+            });
+
+            steps.push({
+                label: 'Step 2: Evaluate left side expression',
+                keys: `<span class="keystroke-comment">[Substitute x = ${x} into ${expression.replace(/<[^>]*>/g, '')}]</span>`
+            });
+
+            steps.push({
+                label: 'Step 3: Evaluate right side (factored form)',
+                keys: `<span class="keystroke-comment">[Substitute x = ${x} into factored form]</span>`
+            });
+
+            steps.push({
+                label: 'Step 4: Compare results',
+                keys: `<span class="keystroke-comment">[Both should equal ${result}]</span>`
+            });
+
+            return steps;
+        }
+
+        function generateStratifiedQuestion() {
+            const numStrata = randInt(2, 4);
+            const groupNames = ['Group A', 'Group B', 'Group C', 'Group D'];
+            const contextNames = [
+                ['Freshmen', 'Sophomores', 'Juniors', 'Seniors'],
+                ['Engineers', 'Managers', 'Executives', 'Interns'],
+                ['Urban', 'Suburban', 'Rural', 'Metro'],
+                ['Small', 'Medium', 'Large', 'Enterprise']
+            ];
+
+            const context = randChoice(contextNames).slice(0, numStrata);
+
+            // Generate population sizes that will divide nicely
+            const basePop = randInt(10, 50) * 10;
+            const strata = [];
+            let totalPop = 0;
+
+            for (let i = 0; i < numStrata; i++) {
+                const pop = basePop + randInt(-20, 30) * 10;
+                strata.push({ name: context[i], pop: Math.max(50, pop) });
+                totalPop += strata[i].pop;
+            }
+
+            // Choose sample size that gives nice numbers
+            const sampleSize = randChoice([20, 25, 30, 40, 50]);
+
+            // Calculate expected samples
+            const samples = strata.map(s => ({
+                name: s.name,
+                pop: s.pop,
+                sample: Math.round((s.pop / totalPop) * sampleSize * 100) / 100
+            }));
+
+            let questionText = `A population has:<br>`;
+            samples.forEach(s => {
+                questionText += `• ${s.name}: ${s.pop}<br>`;
+            });
+            questionText += `<br>Calculate stratified sample sizes for a total sample of n = ${sampleSize}.`;
+
+            return {
+                type: 'stratified',
+                question: questionText,
+                answer: samples.map(s => s.sample),
+                isMultiAnswer: true,
+                strata: samples,
+                totalPop: totalPop,
+                sampleSize: sampleSize,
+                solution: generateStratifiedSolution(samples, totalPop, sampleSize),
+                keystrokes: generateStratifiedKeystrokes(samples, totalPop, sampleSize)
+            };
+        }
+
+        function generateStratifiedSolution(samples, totalPop, sampleSize) {
+            let html = '<div class="solution-step"><strong>Proportional Allocation Formula:</strong></div>';
+            html += '<div class="solution-step">n<sub>stratum</sub> = (Population<sub>stratum</sub> / Population<sub>total</sub>) × n</div>';
+            html += '<div class="solution-step">';
+
+            samples.forEach(s => {
+                html += `${s.name}: (${s.pop} / ${totalPop}) × ${sampleSize} = ${s.sample.toFixed(2)}<br>`;
+            });
+
+            html += '</div>';
+            html += '<div class="solution-answer">Answers: ' + samples.map(s => `${s.name}: ${s.sample.toFixed(1)}`).join(', ') + '</div>';
+
+            return html;
+        }
+
+        function generateStratifiedKeystrokes(samples, totalPop, sampleSize) {
+            let steps = [];
+
+            samples.forEach((s, i) => {
+                steps.push({
+                    label: `Calculate sample for ${s.name}:`,
+                    keys: `${s.pop} <span class="key key-enter">ENTER</span> ${totalPop} <span class="key">÷</span> ${sampleSize} <span class="key">×</span>` +
+                          `<span class="keystroke-comment">[Result: ${s.sample.toFixed(2)}]</span>`
+                });
+            });
+
+            return steps;
+        }
+
+        function generateRandomQuestion() {
+            const N = randChoice([20, 30, 50, 100, 150, 200]);
+            const n = randInt(3, 8);
+
+            const question = `Generate ${n} random integers from 1 to ${N} for a simple random sample.<br><br>
+                              <em>This is practice - use the keystroke sequence below, then enter any ${n} of your generated numbers separated by commas.</em>`;
+
+            return {
+                type: 'random',
+                question: question,
+                answer: null, // No specific answer
+                isPractice: true,
+                N: N,
+                n: n,
+                solution: generateRandomSolution(N, n),
+                keystrokes: generateRandomKeystrokes(N, n)
+            };
+        }
+
+        function generateRandomSolution(N, n) {
+            let html = '<div class="solution-step"><strong>Random Integer Generation:</strong></div>';
+            html += `<div class="solution-step">To generate a random integer from 1 to ${N}:</div>`;
+            html += '<div class="solution-step">';
+            html += `1. Enter ${N}<br>`;
+            html += `2. Generate random number (0 ≤ x < 1)<br>`;
+            html += `3. Multiply to scale to 0 ≤ x < ${N}<br>`;
+            html += `4. Take integer part (0 to ${N-1})<br>`;
+            html += `5. Add 1 to shift range to 1 to ${N}<br>`;
+            html += `</div>`;
+            html += `<div class="solution-step">Repeat ${n} times, skipping duplicates for sampling without replacement.</div>`;
+            return html;
+        }
+
+        function generateRandomKeystrokes(N, n) {
+            return [{
+                label: `Step 1: Store N = ${N} in register 00 (do once):`,
+                keys: `${N} <span class="key">STO</span> <span class="key">00</span>`
+            }, {
+                label: `Step 2: Generate random integer 1 to ${N}:`,
+                keys: `<span class="key">RCL</span> <span class="key">00</span> <span class="key key-shift">[SHIFT]</span> <span class="key">[PROB]</span> <span class="key">RAN</span> <span class="key">×</span> <span class="key key-shift">[SHIFT]</span> <span class="key">[PARTS]</span> <span class="key">IP</span> 1 <span class="key">+</span>`
+            }, {
+                label: 'To generate another:',
+                keys: `<span class="keystroke-comment">Repeat Step 2. Skip duplicates when sampling without replacement.</span>`
+            }, {
+                label: 'Note:',
+                keys: `<span class="keystroke-comment">Generate ${n} unique integers total.</span>`
+            }];
+        }
+
+        // ============================================
+        // QUESTION DISPATCH
+        // ============================================
+
+        function generateQuestion(category) {
+            switch (category) {
+                case 'polynomial': return generatePolynomialQuestion();
+                case 'binomial': return generateBinomialQuestion();
+                case 'complex': return generateComplexQuestion();
+                case 'factoring': return generateFactoringQuestion();
+                case 'stratified': return generateStratifiedQuestion();
+                case 'random': return generateRandomQuestion();
+                default: return generatePolynomialQuestion();
+            }
+        }
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+
+        function renderCategoryTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = '';
+
+            CATEGORIES.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'tab-btn' + (cat.id === state.currentCategory ? ' active' : '');
+                btn.onclick = () => selectCategory(cat.id);
+
+                const prog = progress[cat.id];
+                const progressText = prog.attempted > 0 ? ` (${prog.correct}/${prog.attempted})` : '';
+
+                btn.innerHTML = cat.name + `<span class="tab-progress">${progressText}</span>`;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectCategory(categoryId) {
+            state.currentCategory = categoryId;
+            renderCategoryTabs();
+            newQuestion();
+        }
+
+        function renderQuestion() {
+            const q = state.currentQuestion;
+            if (!q) return;
+
+            const cat = CATEGORIES.find(c => c.id === state.currentCategory);
+            document.getElementById('category-title').textContent = cat.fullName;
+            document.getElementById('question-text').innerHTML = q.question;
+            document.getElementById('solution-text').innerHTML = q.solution;
+
+            // Render keystrokes
+            const keystrokeContainer = document.getElementById('keystroke-content');
+            keystrokeContainer.innerHTML = '';
+
+            q.keystrokes.forEach(step => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'keystroke-step';
+                stepDiv.innerHTML = `
+                    <div class="step-label">${step.label}</div>
+                    <div class="keystroke-box">${step.keys}</div>
+                `;
+                keystrokeContainer.appendChild(stepDiv);
+            });
+
+            // Reset answer section
+            const answerInput = document.getElementById('answer-input');
+            answerInput.value = '';
+            answerInput.className = 'answer-input';
+            answerInput.disabled = false;
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+
+            // Collapse expandables
+            document.getElementById('solution-section').classList.remove('open');
+            document.getElementById('keystroke-section').classList.remove('open');
+
+            // Handle special question types and show/hide verify button
+            const verifyBtn = document.getElementById('verify-btn');
+            if (q.isPractice) {
+                answerInput.placeholder = 'Enter your generated numbers (comma-separated)';
+                verifyBtn.style.display = 'none';
+            } else if (q.isVerification) {
+                answerInput.placeholder = 'Or type "0+0i" / result manually';
+                verifyBtn.style.display = 'inline-block';
+            } else if (q.isMultiAnswer) {
+                answerInput.placeholder = 'Enter answers separated by commas';
+                verifyBtn.style.display = 'none';
+            } else {
+                answerInput.placeholder = 'Enter your answer';
+                verifyBtn.style.display = 'none';
+            }
+
+            state.answered = false;
+        }
+
+        function markVerified() {
+            // For verification drills, user clicks this after confirming result on calculator
+            document.getElementById('answer-input').value = 'verified';
+            checkAnswer();
+        }
+
+        function checkAnswer() {
+            if (state.answered) return;
+
+            const q = state.currentQuestion;
+            const input = document.getElementById('answer-input');
+            const feedback = document.getElementById('feedback');
+            const userAnswer = input.value.trim();
+
+            if (!userAnswer) {
+                feedback.textContent = 'Please enter an answer.';
+                feedback.className = 'feedback incorrect';
+                return;
+            }
+
+            let isCorrect = false;
+
+            if (q.isPractice) {
+                // Practice mode - always accept
+                isCorrect = true;
+                feedback.textContent = 'Great practice! Check your work against the solution.';
+            } else if (q.isVerification) {
+                // Verification drills - accept "verified" button click or typed confirmation
+                const lower = userAnswer.toLowerCase().replace(/\s+/g, '');
+
+                // Always accept "verified" (from Mark Verified button)
+                if (lower === 'verified') {
+                    isCorrect = true;
+                } else if (q.type === 'complex') {
+                    // Complex root verification: accept 0, 0+0i, etc.
+                    const validPatterns = [
+                        /^0$/,
+                        /^0\.?0*$/,
+                        /^0\.?0*\+0\.?0*i$/,
+                        /^0\.?0*i?0\.?0*$/,
+                        /^0\+0i$/,
+                        /^0i$/
+                    ];
+                    isCorrect = validPatterns.some(pattern => pattern.test(lower));
+                } else if (q.type === 'factoring') {
+                    // Factoring verification: also accept the numerical answer
+                    const userNum = parseFloat(userAnswer);
+                    if (!isNaN(userNum)) {
+                        isCorrect = Math.abs(userNum - q.answer) < (q.tolerance || 0.0001);
+                    }
+                }
+            } else if (q.isMultiAnswer) {
+                // Multiple answers (stratified sampling)
+                const userParts = userAnswer.split(',').map(s => parseFloat(s.trim()));
+                const expected = q.answer;
+                if (userParts.length === expected.length) {
+                    isCorrect = userParts.every((val, i) =>
+                        Math.abs(val - expected[i]) < 0.5 // Allow rounding
+                    );
+                }
+            } else {
+                // Standard numerical answer
+                const userNum = parseFloat(userAnswer);
+                if (!isNaN(userNum)) {
+                    isCorrect = Math.abs(userNum - q.answer) < (q.tolerance || 0.0001);
+                }
+            }
+
+            state.answered = true;
+            state.sessionTotal++;
+            progress[state.currentCategory].attempted++;
+
+            if (isCorrect) {
+                state.sessionCorrect++;
+                progress[state.currentCategory].correct++;
+                input.className = 'answer-input correct';
+                feedback.textContent = 'Correct!';
+                feedback.className = 'feedback correct';
+            } else {
+                input.className = 'answer-input incorrect';
+                if (q.isPractice) {
+                    feedback.textContent = 'Check the solution to verify your work.';
+                } else if (q.isMultiAnswer) {
+                    const expected = q.answer.map(a => a.toFixed(1)).join(', ');
+                    feedback.textContent = `Expected: ${expected}. Check your calculations.`;
+                } else {
+                    feedback.textContent = `Not quite. The answer is ${q.answer}. Try the next one!`;
+                }
+                feedback.className = 'feedback incorrect';
+            }
+
+            // Auto-expand solution on incorrect
+            if (!isCorrect) {
+                document.getElementById('solution-section').classList.add('open');
+            }
+
+            saveProgress();
+            updateStats();
+            renderProgressGrid();
+            renderCategoryTabs();
+        }
+
+        function newQuestion() {
+            state.currentQuestion = generateQuestion(state.currentCategory);
+            renderQuestion();
+        }
+
+        function toggleExpandable(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        function updateStats() {
+            document.getElementById('session-correct').textContent = state.sessionCorrect;
+            document.getElementById('session-total').textContent = state.sessionTotal;
+
+            let allTimeCorrect = 0;
+            for (const cat of CATEGORIES) {
+                allTimeCorrect += progress[cat.id].correct;
+            }
+            document.getElementById('alltime-correct').textContent = allTimeCorrect;
+        }
+
+        function renderProgressGrid() {
+            const grid = document.getElementById('progress-grid');
+            grid.innerHTML = '';
+
+            CATEGORIES.forEach(cat => {
+                const prog = progress[cat.id];
+                const pct = prog.attempted > 0 ? Math.round((prog.correct / prog.attempted) * 100) : 0;
+
+                const item = document.createElement('div');
+                item.className = 'progress-item';
+                item.innerHTML = `
+                    <div class="progress-item-label">${cat.name}</div>
+                    <div class="progress-item-value">${prog.correct}/${prog.attempted}</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: ${pct}%"></div>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function resetProgress() {
+            if (confirm('Reset all progress? This cannot be undone.')) {
+                progress = {
+                    polynomial: { attempted: 0, correct: 0 },
+                    binomial: { attempted: 0, correct: 0 },
+                    complex: { attempted: 0, correct: 0 },
+                    factoring: { attempted: 0, correct: 0 },
+                    stratified: { attempted: 0, correct: 0 },
+                    random: { attempted: 0, correct: 0 },
+                    lastSession: new Date().toISOString()
+                };
+                state.sessionCorrect = 0;
+                state.sessionTotal = 0;
+                saveProgress();
+                updateStats();
+                renderProgressGrid();
+                renderCategoryTabs();
+            }
+        }
+
+        // ============================================
+        // KEYBOARD SUPPORT
+        // ============================================
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.activeElement.id === 'answer-input') {
+                if (!state.answered) {
+                    checkAnswer();
+                } else {
+                    newQuestion();
+                }
+            }
+        });
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        function init() {
+            renderCategoryTabs();
+            renderProgressGrid();
+            updateStats();
+            newQuestion();
+        }
+
+        init();
+    </script>
+</body>
+</html>
